@@ -1,0 +1,2316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Hariyali Setu – A Youth Climate Initiative in Kanpur, India. Reducing urban heat through tree plantation, water relief, and community action." />
+  <meta name="keywords" content="NGO, Kanpur, tree plantation, climate, youth, Hariyali Setu, environment" />
+  <meta property="og:title" content="Hariyali Setu – A Youth Climate Initiative" />
+  <meta property="og:description" content="Bringing Shade Back to Earth, One Tree at a Time." />
+  <title>Hariyali Setu – A Youth Climate Initiative</title>
+
+  <!-- Google Fonts: Playfair Display + DM Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS & CSS VARIABLES
+    ============================================================ */
+    :root {
+      --forest:   #1B4332;
+      --sage:     #52796F;
+      --mint:     #84A98C;
+      --pale:     #CAD2C5;
+      --earth:    #7D5A3C;
+      --clay:     #C9956C;
+      --gold:     #C9A84C;
+      --gold-lt:  #E8C96A;
+      --cream:    #F4F1E8;
+      --warm:     #FAFAF5;
+      --dark:     #111A16;
+      --text:     #2D3B35;
+      --muted:    #6B7F74;
+      --border:   rgba(27,67,50,0.12);
+
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'DM Sans', sans-serif;
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+
+      --shadow-sm:  0 2px 12px rgba(27,67,50,0.08);
+      --shadow-md:  0 8px 32px rgba(27,67,50,0.12);
+      --shadow-lg:  0 24px 64px rgba(27,67,50,0.16);
+      --shadow-xl:  0 40px 80px rgba(27,67,50,0.20);
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--warm);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+    a  { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ============================================================
+       SCROLL REVEAL UTILITY
+    ============================================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-50px);
+      transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(50px);
+      transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    .delay-1 { transition-delay: 0.1s; }
+    .delay-2 { transition-delay: 0.2s; }
+    .delay-3 { transition-delay: 0.3s; }
+    .delay-4 { transition-delay: 0.4s; }
+    .delay-5 { transition-delay: 0.5s; }
+
+    /* ============================================================
+       LAYOUT HELPERS
+    ============================================================ */
+    .container {
+      width: 100%;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    section { position: relative; }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 2px;
+      background: var(--gold);
+      border-radius: 2px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--forest);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .section-body {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.8;
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.12);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .btn:hover::after { opacity: 1; }
+
+    .btn-primary {
+      background: var(--forest);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(27,67,50,0.35);
+    }
+    .btn-primary:hover {
+      background: #163825;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(27,67,50,0.45);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255,255,255,0.65);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--dark);
+      box-shadow: 0 8px 24px rgba(201,168,76,0.4);
+    }
+    .btn-gold:hover {
+      background: var(--gold-lt);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(201,168,76,0.5);
+    }
+
+    /* ============================================================
+       NAVBAR
+    ============================================================ */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 999;
+      padding: 20px 0;
+      transition: all 0.4s var(--ease-out);
+    }
+    #navbar.scrolled {
+      background: rgba(250,250,245,0.95);
+      backdrop-filter: blur(16px);
+      padding: 12px 0;
+      box-shadow: var(--shadow-sm);
+    }
+    #navbar .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .nav-logo .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--forest);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(27,67,50,0.3);
+    }
+    .nav-logo .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .nav-logo .logo-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--forest);
+    }
+    .nav-logo .logo-tagline {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--sage);
+      text-transform: uppercase;
+    }
+    /* Make logo text white when not scrolled */
+    #navbar:not(.scrolled) .logo-name { color: #fff; }
+    #navbar:not(.scrolled) .logo-tagline { color: rgba(255,255,255,0.7); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .nav-links a {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.3s var(--ease-out);
+      border-radius: 2px;
+    }
+    .nav-links a:hover { color: var(--forest); }
+    .nav-links a:hover::after { width: 100%; }
+    #navbar:not(.scrolled) .nav-links a { color: rgba(255,255,255,0.85); }
+    #navbar:not(.scrolled) .nav-links a:hover { color: #fff; }
+
+    .nav-cta .btn { padding: 10px 24px; font-size: 0.85rem; }
+
+    /* Hamburger */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 26px; height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    #navbar.scrolled .nav-toggle span { background: var(--forest); }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      background: var(--warm);
+      border-top: 1px solid var(--border);
+      padding: 12px 0 20px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      padding: 12px 32px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .mobile-menu a:hover { background: rgba(27,67,50,0.05); color: var(--forest); }
+    .mobile-menu .btn { margin: 12px 32px 0; }
+
+    /* ============================================================
+       HERO SECTION
+    ============================================================ */
+    #hero {
+      height: 100vh;
+      min-height: 680px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--dark);
+    }
+
+    /* Layered background: gradient + SVG forest + overlay */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        #0a1f13 0%,
+        #1B4332 35%,
+        #2D6A4F 60%,
+        #40916C 80%,
+        #52B788 100%
+      );
+    }
+    /* Animated floating leaves */
+    .hero-leaves {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .leaf {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      opacity: 0.12;
+      animation: floatLeaf linear infinite;
+    }
+    @keyframes floatLeaf {
+      0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.15; }
+      90%  { opacity: 0.12; }
+      100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* Radial glow top-right */
+    .hero-glow {
+      position: absolute;
+      top: -10%;
+      right: -5%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(82,183,136,0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    /* Bottom vignette */
+    .hero-vignette {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 260px;
+      background: linear-gradient(to top, var(--warm) 0%, transparent 100%);
+    }
+
+    /* Tree silhouette SVG layer */
+    .hero-trees {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      width: 100%;
+      height: 55%;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 760px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 28px;
+      backdrop-filter: blur(8px);
+      animation: fadeDown 0.8s var(--ease-out) 0.2s both;
+    }
+    .hero-badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold-lt);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50%       { transform: scale(1.4); opacity: 0.7; }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5.5vw, 5rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      animation: fadeDown 0.8s var(--ease-out) 0.4s both;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-lt);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 520px;
+      margin-bottom: 40px;
+      animation: fadeDown 0.8s var(--ease-out) 0.6s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeDown 0.8s var(--ease-out) 0.8s both;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 64px;
+      flex-wrap: wrap;
+      animation: fadeDown 0.8s var(--ease-out) 1s both;
+    }
+    .hero-stat .num {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--gold-lt);
+      line-height: 1;
+    }
+    .hero-stat .lbl {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+    .hero-stat + .hero-stat { border-left: 1px solid rgba(255,255,255,0.15); padding-left: 40px; }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 100px;
+      right: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      animation: fadeIn 1s var(--ease-out) 1.4s both;
+    }
+    .scroll-hint .line {
+      width: 1px;
+      height: 48px;
+      background: rgba(255,255,255,0.25);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-hint .line::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 50%;
+      background: var(--gold-lt);
+      animation: scrollLine 1.6s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%   { top: -50%; }
+      100% { top: 110%; }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ============================================================
+       ABOUT SECTION
+    ============================================================ */
+    #about {
+      padding: 120px 0;
+      background: var(--warm);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-img-main {
+      width: 100%;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #1B4332 0%, #40916C 50%, #52B788 100%);
+      aspect-ratio: 4/5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+    }
+    .about-img-main svg { width: 70%; height: 70%; opacity: 0.3; }
+
+    .about-img-badge {
+      position: absolute;
+      bottom: -28px;
+      right: -28px;
+      background: var(--gold);
+      border-radius: 20px;
+      padding: 22px 26px;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+    }
+    .about-img-badge .big { font-family: var(--font-display); font-size: 2.6rem; font-weight: 800; color: var(--dark); line-height: 1; }
+    .about-img-badge .sm  { font-size: 0.72rem; font-weight: 600; color: rgba(0,0,0,0.6); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; }
+
+    /* Floating accent circle */
+    .about-circle {
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid var(--mint);
+      opacity: 0.4;
+    }
+
+    .about-content {}
+    .vision-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .v-card {
+      background: var(--cream);
+      border-radius: 16px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+    }
+    .v-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .v-card .icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .v-card .title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--forest); margin-bottom: 6px; }
+    .v-card .desc  { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    /* ============================================================
+       WHAT WE DO
+    ============================================================ */
+    #what-we-do {
+      padding: 120px 0;
+      background: var(--forest);
+      overflow: hidden;
+    }
+    #what-we-do .section-label { color: var(--gold-lt); }
+    #what-we-do .section-title { color: #fff; }
+    #what-we-do .section-body  { color: rgba(255,255,255,0.65); }
+
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 64px;
+    }
+    .program-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 36px 30px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s var(--ease-out);
+      cursor: default;
+    }
+    .program-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .program-card:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.3);
+    }
+    .program-card:hover::before { opacity: 1; }
+
+    .program-icon {
+      font-size: 2.8rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .program-num {
+      position: absolute;
+      top: 28px; right: 28px;
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: rgba(255,255,255,0.06);
+      line-height: 1;
+    }
+    .program-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .program-desc {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.7;
+    }
+    .program-tag {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 6px 16px;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gold-lt);
+      letter-spacing: 0.06em;
+    }
+
+    /* Large card spanning 2 cols */
+    .program-card.large {
+      grid-column: span 2;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .program-card.large .program-icon { font-size: 4rem; margin-bottom: 0; }
+
+    /* ============================================================
+       IMPACT / STATS
+    ============================================================ */
+    #impact {
+      padding: 100px 0;
+      background: var(--cream);
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 60px;
+      background: var(--forest);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+    }
+    .stat-box {
+      padding: 52px 36px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      transition: background 0.3s;
+    }
+    .stat-box:last-child { border-right: none; }
+    .stat-box:hover { background: rgba(255,255,255,0.06); }
+    .stat-box .icon { font-size: 2rem; margin-bottom: 16px; }
+    .stat-box .num {
+      font-family: var(--font-display);
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: var(--gold-lt);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-box .plus { color: var(--gold); }
+    .stat-box .label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       GET INVOLVED
+    ============================================================ */
+    #get-involved {
+      padding: 120px 0;
+      background: var(--warm);
+    }
+    .involved-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+      margin-top: 64px;
+    }
+    .involved-options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .opt-card {
+      background: var(--cream);
+      border-radius: 18px;
+      padding: 28px 30px;
+      border: 2px solid transparent;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      transition: all 0.3s var(--ease-out);
+      cursor: pointer;
+    }
+    .opt-card:hover {
+      border-color: var(--mint);
+      background: #fff;
+      box-shadow: var(--shadow-md);
+      transform: translateX(6px);
+    }
+    .opt-icon {
+      width: 52px; height: 52px;
+      background: rgba(27,67,50,0.08);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .opt-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--forest); margin-bottom: 4px; }
+    .opt-desc  { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* Volunteer Form */
+    .vol-form {
+      background: #fff;
+      border-radius: 28px;
+      padding: 44px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+    .vol-form h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--forest);
+      margin-bottom: 8px;
+    }
+    .vol-form p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 30px;
+    }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--sage);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      color: var(--text);
+      background: var(--warm);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      outline: none;
+      appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--sage);
+      box-shadow: 0 0 0 4px rgba(82,121,111,0.12);
+      background: #fff;
+    }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-submit {
+      width: 100%;
+      padding: 16px;
+      background: var(--forest);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+      margin-top: 10px;
+      box-shadow: 0 8px 24px rgba(27,67,50,0.3);
+    }
+    .form-submit:hover {
+      background: #163825;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(27,67,50,0.4);
+    }
+    .form-note {
+      font-size: 0.76rem;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    /* ============================================================
+       DONATE SECTION
+    ============================================================ */
+    #donate {
+      padding: 120px 0;
+      background: linear-gradient(135deg, var(--forest) 0%, #2D6A4F 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    #donate::before {
+      content: '';
+      position: absolute;
+      top: -100px; right: -100px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(82,183,136,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    #donate .section-label { color: var(--gold-lt); }
+    #donate .section-title { color: #fff; }
+    #donate .section-body  { color: rgba(255,255,255,0.7); }
+
+    .donate-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: start;
+      margin-top: 60px;
+    }
+
+    .donate-types {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .donate-card {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 26px 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      transition: all 0.35s var(--ease-out);
+      cursor: pointer;
+    }
+    .donate-card:hover {
+      background: rgba(255,255,255,0.13);
+      transform: translateX(6px);
+      border-color: rgba(201,168,76,0.4);
+    }
+    .donate-card-icon {
+      font-size: 2.2rem;
+      width: 62px; height: 62px;
+      background: rgba(201,168,76,0.15);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .donate-card-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .donate-card-desc  { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+    .donate-card-amt   { margin-left: auto; font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--gold-lt); white-space: nowrap; }
+
+    .donate-panel {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 28px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+      text-align: center;
+    }
+    .qr-box {
+      width: 180px; height: 180px;
+      background: #fff;
+      border-radius: 20px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      padding: 12px;
+    }
+    .qr-placeholder {
+      width: 100%; height: 100%;
+      border: 3px solid #eee;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.7rem;
+      color: #aaa;
+      font-weight: 500;
+    }
+    .qr-placeholder .qr-icon { font-size: 2.8rem; }
+
+    .upi-id {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .upi-id span { font-size: 0.9rem; color: rgba(255,255,255,0.9); font-weight: 500; }
+    .copy-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.7);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    .donate-panel h4 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .donate-panel p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 28px;
+    }
+
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50px;
+      padding: 10px 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gold-lt);
+      margin-top: 20px;
+    }
+
+    /* ============================================================
+       FOUNDERS
+    ============================================================ */
+    #founders {
+      padding: 120px 0;
+      background: var(--warm);
+    }
+    .founders-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 60px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .founder-card {
+      background: #fff;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      transition: transform 0.35s var(--ease-out), box-shadow 0.35s;
+    }
+    .founder-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-xl);
+    }
+    .founder-photo {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--forest) 0%, var(--mint) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .founder-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(27,67,50,0.3) 100%);
+    }
+    .founder-info {
+      padding: 28px;
+    }
+    .founder-name {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--forest);
+      margin-bottom: 4px;
+    }
+    .founder-role {
+      display: inline-block;
+      padding: 4px 14px;
+      background: var(--cream);
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--sage);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .founder-bio {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       CONTACT SECTION
+    ============================================================ */
+    #contact {
+      padding: 120px 0;
+      background: var(--cream);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 80px;
+      align-items: start;
+      margin-top: 60px;
+    }
+    .contact-info {}
+    .contact-details { margin-top: 36px; display: flex; flex-direction: column; gap: 20px; }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .contact-icon {
+      width: 48px; height: 48px;
+      background: var(--forest);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(27,67,50,0.25);
+    }
+    .contact-item-label { font-size: 0.72rem; font-weight: 600; color: var(--sage); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+    .contact-item-val   { font-size: 0.95rem; color: var(--text); font-weight: 500; }
+
+    .contact-form-wrap {
+      background: #fff;
+      border-radius: 28px;
+      padding: 44px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+    .contact-form-wrap h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--forest);
+      margin-bottom: 6px;
+    }
+    .contact-form-wrap p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    #footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.7);
+      padding: 64px 0 32px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 32px;
+    }
+    .footer-brand .logo-name { color: #fff; font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .footer-brand p { font-size: 0.85rem; line-height: 1.7; max-width: 280px; color: rgba(255,255,255,0.55); margin-bottom: 24px; }
+    .social-links { display: flex; gap: 10px; }
+    .social-link {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .social-link:hover {
+      background: var(--forest);
+      border-color: var(--sage);
+      transform: translateY(-2px);
+    }
+    .footer-col h4 {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 18px;
+    }
+    .footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.6);
+      transition: color 0.3s;
+    }
+    .footer-col ul li a:hover { color: var(--gold-lt); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer-bottom p { font-size: 0.8rem; color: rgba(255,255,255,0.35); }
+    .footer-bottom .eco-msg {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+    }
+
+    /* ============================================================
+       BANNER / CTA STRIP
+    ============================================================ */
+    .cta-strip {
+      background: var(--gold);
+      padding: 28px 0;
+      overflow: hidden;
+    }
+    .cta-strip-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .cta-strip p {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--dark);
+      font-style: italic;
+    }
+    .cta-strip .btn-forest {
+      background: var(--forest);
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+    .cta-strip .btn-forest:hover { background: #163825; transform: translateY(-2px); }
+
+    /* ============================================================
+       SUCCESS / TOAST MESSAGES
+    ============================================================ */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--forest);
+      color: #fff;
+      padding: 16px 24px;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.4s var(--ease-out);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ============================================================
+       BACK TO TOP
+    ============================================================ */
+    #back-top {
+      position: fixed;
+      bottom: 36px;
+      left: 36px;
+      width: 48px; height: 48px;
+      background: var(--forest);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 99;
+      box-shadow: var(--shadow-md);
+      border: none;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.3s var(--ease-out);
+    }
+    #back-top.visible { opacity: 1; transform: scale(1); }
+    #back-top:hover { background: var(--sage); transform: scale(1.1); }
+
+    /* ============================================================
+       DIVIDERS
+    ============================================================ */
+    .wave-divider { display: block; line-height: 0; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      .about-grid        { gap: 48px; }
+      .programs-grid     { grid-template-columns: 1fr 1fr; }
+      .program-card.large{ grid-column: span 2; }
+      .stats-row         { grid-template-columns: repeat(2, 1fr); }
+      .stat-box          { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .stat-box:nth-child(2n) { border-right: none; }
+      .donate-grid       { gap: 40px; }
+      .footer-top        { grid-template-columns: 1fr 1fr; gap: 36px; }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+
+      .nav-links, .nav-cta { display: none; }
+      .nav-toggle { display: flex; }
+
+      .about-grid,
+      .involved-grid,
+      .contact-grid,
+      .donate-grid { grid-template-columns: 1fr; gap: 40px; }
+
+      .about-visual { order: -1; }
+      .about-img-badge { bottom: -20px; right: -12px; }
+      .founders-grid { grid-template-columns: 1fr; max-width: 400px; }
+
+      .programs-grid { grid-template-columns: 1fr; }
+      .program-card.large { grid-column: span 1; flex-direction: column; gap: 16px; }
+
+      .stats-row { grid-template-columns: 1fr 1fr; border-radius: 20px; }
+      .stat-box  { border-right: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .stat-box:nth-child(2n) { border-right: none; }
+
+      .hero-stats { gap: 24px; }
+      .hero-stat + .hero-stat { padding-left: 24px; }
+
+      .vision-cards { grid-template-columns: 1fr; }
+
+      .form-row { grid-template-columns: 1fr; }
+
+      .vol-form, .contact-form-wrap { padding: 28px 22px; }
+      .donate-panel { padding: 30px 24px; }
+
+      .footer-top { grid-template-columns: 1fr; gap: 28px; }
+      .footer-bottom { justify-content: center; text-align: center; }
+
+      .cta-strip-inner { justify-content: center; text-align: center; }
+
+      .scroll-hint { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title { font-size: 2.2rem; }
+      .hero-actions .btn { padding: 12px 22px; font-size: 0.88rem; }
+      .stats-row { grid-template-columns: 1fr; }
+      .stat-box { border-right: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <!-- Logo -->
+      <a href="#hero" class="nav-logo">
+        <div class="logo-icon">🌱</div>
+        <div class="logo-text">
+          <span class="logo-name">Hariyali Setu</span>
+          <span class="logo-tagline">Youth Climate Initiative</span>
+        </div>
+      </a>
+
+      <!-- Desktop Links -->
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#what-we-do">Programs</a></li>
+        <li><a href="#impact">Impact</a></li>
+        <li><a href="#get-involved">Get Involved</a></li>
+        <li><a href="#founders">Team</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="#donate" class="btn btn-gold">Donate Now 🌿</a>
+      </div>
+
+      <!-- Hamburger -->
+      <div class="nav-toggle" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#about"       onclick="toggleMenu()">About Us</a>
+      <a href="#what-we-do"  onclick="toggleMenu()">Programs</a>
+      <a href="#impact"      onclick="toggleMenu()">Impact</a>
+      <a href="#get-involved" onclick="toggleMenu()">Get Involved</a>
+      <a href="#founders"    onclick="toggleMenu()">Our Team</a>
+      <a href="#contact"     onclick="toggleMenu()">Contact</a>
+      <a href="#donate" class="btn btn-gold" onclick="toggleMenu()">Donate Now 🌿</a>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ============================================================
+     HERO SECTION
+============================================================ -->
+<section id="hero">
+  <!-- Layered background -->
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+
+  <!-- Floating leaves -->
+  <div class="hero-leaves" id="leafContainer"></div>
+
+  <!-- Tree silhouettes -->
+  <svg class="hero-trees" viewBox="0 0 1440 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Left tree group -->
+    <g opacity="0.18" fill="#52B788">
+      <ellipse cx="80"  cy="340" rx="60"  ry="90"  />
+      <ellipse cx="80"  cy="300" rx="45"  ry="70"  />
+      <ellipse cx="60"  cy="290" rx="35"  ry="55"  />
+      <rect x="72" y="360" width="16" height="40" fill="#2D6A4F" />
+    </g>
+    <g opacity="0.14" fill="#40916C">
+      <ellipse cx="200" cy="360" rx="80"  ry="110" />
+      <ellipse cx="200" cy="310" rx="60"  ry="80"  />
+      <ellipse cx="175" cy="300" rx="45"  ry="60"  />
+      <rect x="192" y="380" width="16" height="20" fill="#2D6A4F" />
+    </g>
+    <!-- Right tree group -->
+    <g opacity="0.16" fill="#52B788">
+      <ellipse cx="1360" cy="350" rx="70"  ry="100" />
+      <ellipse cx="1360" cy="305" rx="52"  ry="75"  />
+      <ellipse cx="1385" cy="295" rx="40"  ry="58"  />
+      <rect x="1352" y="370" width="16" height="30" fill="#2D6A4F" />
+    </g>
+    <g opacity="0.12" fill="#40916C">
+      <ellipse cx="1260" cy="370" rx="90"  ry="120" />
+      <ellipse cx="1260" cy="315" rx="68"  ry="90"  />
+      <rect x="1252" y="390" width="16" height="10" fill="#2D6A4F" />
+    </g>
+    <!-- Mid distant trees -->
+    <g opacity="0.1" fill="#84A98C">
+      <ellipse cx="500"  cy="390" rx="55"  ry="75"  />
+      <ellipse cx="700"  cy="395" rx="45"  ry="65"  />
+      <ellipse cx="900"  cy="388" rx="50"  ry="70"  />
+      <ellipse cx="1100" cy="392" rx="42"  ry="60"  />
+    </g>
+    <!-- Ground strip -->
+    <rect x="0" y="395" width="1440" height="10" fill="#1B4332" opacity="0.3" />
+  </svg>
+
+  <!-- Bottom fade -->
+  <div class="hero-vignette"></div>
+
+  <!-- Content -->
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Kanpur, Uttar Pradesh, India
+      </div>
+
+      <h1 class="hero-title">
+        Bringing <em>Shade</em><br>
+        Back to Earth,<br>
+        One Tree at a Time.
+      </h1>
+
+      <p class="hero-sub">
+        A youth-driven climate initiative reducing urban heat in Kanpur through tree plantation, water relief, and community awareness.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#get-involved" class="btn btn-primary">🤝 Join Us</a>
+        <a href="#donate"       class="btn btn-outline">💚 Donate Now</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num" data-target="2800">0</div>
+          <div class="lbl">Trees Planted</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num" data-target="340">0</div>
+          <div class="lbl">Volunteers</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num" data-target="18">0</div>
+          <div class="lbl">Areas Covered</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num" data-target="50">0</div>
+          <div class="lbl">Matkas Installed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="scroll-hint">
+    <div class="line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     ABOUT SECTION
+============================================================ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+
+      <!-- Visual -->
+      <div class="about-visual reveal-left">
+        <div class="about-circle"></div>
+        <div class="about-img-main">
+          <!-- Large decorative tree SVG -->
+          <svg viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="100" cy="120" rx="80" ry="100" fill="#84A98C"/>
+            <ellipse cx="100" cy="90"  rx="65" ry="80"  fill="#52796F"/>
+            <ellipse cx="80"  cy="80"  rx="50" ry="65"  fill="#40916C"/>
+            <ellipse cx="115" cy="70"  rx="45" ry="58"  fill="#52B788"/>
+            <rect x="90" y="200" width="20" height="70" rx="4" fill="#2D6A4F"/>
+            <!-- Leaves details -->
+            <circle cx="60"  cy="60"  r="18" fill="#74C69D" opacity="0.7"/>
+            <circle cx="140" cy="55"  r="14" fill="#74C69D" opacity="0.6"/>
+            <circle cx="100" cy="40"  r="20" fill="#95D5B2" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="about-img-badge">
+          <div class="big">2024</div>
+          <div class="sm">Founded</div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="about-content reveal-right">
+        <div class="section-label">About Us</div>
+        <h2 class="section-title">We are the<br><em>Green Bridge</em> for Kanpur</h2>
+        <p class="section-body">
+          We are a youth-driven initiative working to reduce extreme heat in Kanpur through tree plantation, water relief, and community awareness. Every action we take is rooted in urgency and love for our city.
+        </p>
+
+        <div class="vision-cards">
+          <div class="v-card reveal delay-1">
+            <div class="icon">🌍</div>
+            <div class="title">Our Vision</div>
+            <div class="desc">A cooler, greener Kanpur where every street is shaded and every resident thrives.</div>
+          </div>
+          <div class="v-card reveal delay-2">
+            <div class="icon">🎯</div>
+            <div class="title">Our Mission</div>
+            <div class="desc">Mobilize youth to plant trees, install water stations, and educate communities on climate resilience.</div>
+          </div>
+          <div class="v-card reveal delay-3">
+            <div class="icon">🤝</div>
+            <div class="title">Community</div>
+            <div class="desc">Partnering with schools, colleges, and local bodies to create lasting green impact at scale.</div>
+          </div>
+          <div class="v-card reveal delay-4">
+            <div class="icon">💧</div>
+            <div class="title">Water Relief</div>
+            <div class="desc">Setting up Matka/Pyaau stations across Kanpur's hotspots to provide free drinking water.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     WHAT WE DO
+============================================================ -->
+<section id="what-we-do">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Our Programs</div>
+      <h2 class="section-title">What We Do</h2>
+      <p class="section-body">
+        Five pillars of action, united by a single mission: making Kanpur cooler, greener, and more livable for everyone.
+      </p>
+    </div>
+
+    <div class="programs-grid">
+
+      <div class="program-card reveal delay-1">
+        <span class="program-num">01</span>
+        <span class="program-icon">🌳</span>
+        <div class="program-title">Tree Plantation Drives</div>
+        <p class="program-desc">Organized mass plantation drives across schools, parks, roadways, and empty plots throughout Kanpur's most heat-affected zones.</p>
+        <span class="program-tag">Flagship Program</span>
+      </div>
+
+      <div class="program-card reveal delay-2">
+        <span class="program-num">02</span>
+        <span class="program-icon">💧</span>
+        <div class="program-title">Water Stations (Matka / Pyaau)</div>
+        <p class="program-desc">Installing earthen water pots and cooling stations at key locations to provide free drinking water to commuters, workers, and animals.</p>
+        <span class="program-tag">Active Year-Round</span>
+      </div>
+
+      <div class="program-card reveal delay-3">
+        <span class="program-num">03</span>
+        <span class="program-icon">🐦</span>
+        <div class="program-title">Bird Feeding Campaigns</div>
+        <p class="program-desc">Distributing bird feeders and setting up feeding stations to support urban biodiversity and raise public awareness about wildlife.</p>
+        <span class="program-tag">Biodiversity</span>
+      </div>
+
+      <div class="program-card reveal delay-4">
+        <span class="program-num">04</span>
+        <span class="program-icon">🌡️</span>
+        <div class="program-title">Urban Cooling Awareness</div>
+        <p class="program-desc">Street plays, social media campaigns, workshops, and door-to-door outreach to educate citizens about reducing urban heat island effect.</p>
+        <span class="program-tag">Community Education</span>
+      </div>
+
+      <!-- Large card -->
+      <div class="program-card large reveal delay-5">
+        <span class="program-icon">🏫</span>
+        <div>
+          <span class="program-num" style="position:relative;top:auto;right:auto;font-size:2.5rem;">05</span>
+          <div class="program-title" style="font-size:1.5rem;">Campus Collaborations</div>
+          <p class="program-desc">We actively partner with schools, colleges, and universities to run green clubs, plantation events, and eco-awareness programs that inspire the next generation of climate champions.</p>
+          <span class="program-tag">Schools · Colleges · Universities</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     IMPACT / STATS
+============================================================ -->
+<section id="impact">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-label" style="justify-content:center;">Our Impact</div>
+      <h2 class="section-title" style="text-align:center;">Numbers That<br>Speak for Nature</h2>
+    </div>
+
+    <div class="stats-row reveal">
+      <div class="stat-box">
+        <div class="icon">🌳</div>
+        <div class="num"><span class="count" data-target="2800">0</span><span class="plus">+</span></div>
+        <div class="label">Trees Planted</div>
+      </div>
+      <div class="stat-box">
+        <div class="icon">👥</div>
+        <div class="num"><span class="count" data-target="340">0</span><span class="plus">+</span></div>
+        <div class="label">Volunteers Joined</div>
+      </div>
+      <div class="stat-box">
+        <div class="icon">📍</div>
+        <div class="num"><span class="count" data-target="18">0</span><span class="plus">+</span></div>
+        <div class="label">Areas Covered</div>
+      </div>
+      <div class="stat-box">
+        <div class="icon">💧</div>
+        <div class="num"><span class="count" data-target="50">0</span><span class="plus">+</span></div>
+        <div class="label">Water Stations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CTA STRIP
+============================================================ -->
+<div class="cta-strip">
+  <div class="container cta-strip-inner">
+    <p>"Every tree planted is a vote for the future we want."</p>
+    <a href="#get-involved" class="btn-forest">🌱 Start Volunteering</a>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     GET INVOLVED
+============================================================ -->
+<section id="get-involved">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Get Involved</div>
+      <h2 class="section-title">Be Part of the Change</h2>
+      <p class="section-body">Whether you have an hour, a weekend, or a lifetime to give — there's a place for you in Hariyali Setu.</p>
+    </div>
+
+    <div class="involved-grid">
+
+      <!-- Options -->
+      <div class="involved-options">
+        <div class="opt-card reveal delay-1">
+          <div class="opt-icon">🌱</div>
+          <div>
+            <div class="opt-title">Volunteer with Us</div>
+            <div class="opt-desc">Join our on-ground team for plantation drives, water station setups, and awareness campaigns.</div>
+          </div>
+        </div>
+        <div class="opt-card reveal delay-2">
+          <div class="opt-icon">🚗</div>
+          <div>
+            <div class="opt-title">Join Plantation Drives</div>
+            <div class="opt-desc">Participate in our monthly drives held across Kanpur. No experience needed — just your enthusiasm.</div>
+          </div>
+        </div>
+        <div class="opt-card reveal delay-3">
+          <div class="opt-icon">🏫</div>
+          <div>
+            <div class="opt-title">Collaborate — Schools & Colleges</div>
+            <div class="opt-desc">Partner with us to establish green clubs, organize eco-events, and build sustainability programs on your campus.</div>
+          </div>
+        </div>
+        <div class="opt-card reveal delay-4">
+          <div class="opt-icon">📣</div>
+          <div>
+            <div class="opt-title">Spread the Word</div>
+            <div class="opt-desc">Share our mission on social media, organize awareness sessions, or simply tell your community about our work.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Volunteer Form -->
+      <div class="vol-form reveal delay-2">
+        <h3>Volunteer Registration</h3>
+        <p>Fill in your details and we'll get in touch within 48 hours.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="Priya" />
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Sharma" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@example.com" />
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+91 98765 43210" />
+        </div>
+
+        <div class="form-group">
+          <label>I want to help with</label>
+          <select>
+            <option value="">Select an area…</option>
+            <option>Tree Plantation Drives</option>
+            <option>Water Station Setup</option>
+            <option>Bird Feeding Campaign</option>
+            <option>Campus Outreach</option>
+            <option>Social Media & Awareness</option>
+            <option>Fundraising</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tell Us About Yourself (Optional)</label>
+          <textarea placeholder="Brief introduction, your background, how you heard about us…"></textarea>
+        </div>
+
+        <button class="form-submit" onclick="handleVolForm(event)">🌿 Register as Volunteer</button>
+        <div class="form-note">✅ Your details are safe with us. We'll never spam you.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     DONATE SECTION
+============================================================ -->
+<section id="donate">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Support Our Mission</div>
+      <h2 class="section-title">Make a Real Impact</h2>
+      <p class="section-body">Every contribution — big or small — directly creates shade, water, and life in our city.</p>
+    </div>
+
+    <div class="donate-grid">
+
+      <!-- Donation types -->
+      <div class="donate-types">
+        <div class="donate-card reveal delay-1">
+          <div class="donate-card-icon">🌳</div>
+          <div>
+            <div class="donate-card-title">Sponsor a Tree</div>
+            <div class="donate-card-desc">Fund the purchase and plantation of one tree, including 6-month survival care.</div>
+          </div>
+          <div class="donate-card-amt">₹200</div>
+        </div>
+
+        <div class="donate-card reveal delay-2">
+          <div class="donate-card-icon">🏺</div>
+          <div>
+            <div class="donate-card-title">Donate a Matka (Water Pot)</div>
+            <div class="donate-card-desc">Sponsor an earthen water pot at a public hotspot — one matka serves ~100 people daily.</div>
+          </div>
+          <div class="donate-card-amt">₹150</div>
+        </div>
+
+        <div class="donate-card reveal delay-3">
+          <div class="donate-card-icon">🐦</div>
+          <div>
+            <div class="donate-card-title">Bird Food Support</div>
+            <div class="donate-card-desc">Fund a month of bird seed, water bowls, and feeders at locations across the city.</div>
+          </div>
+          <div class="donate-card-amt">₹100</div>
+        </div>
+
+        <div class="donate-card reveal delay-4">
+          <div class="donate-card-icon">💚</div>
+          <div>
+            <div class="donate-card-title">General Donation</div>
+            <div class="donate-card-desc">Support our campaigns, events, outreach, and operational expenses.</div>
+          </div>
+          <div class="donate-card-amt">Any</div>
+        </div>
+
+        <!-- Trust line -->
+        <div class="reveal delay-5" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:14px;">
+          <span style="font-size:1.6rem;">🔒</span>
+          <div>
+            <div style="font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:3px;">Transparent &amp; Accountable</div>
+            <div style="font-size:0.8rem;color:rgba(255,255,255,0.55);">Every contribution creates real impact. We publish annual impact reports and maintain full financial transparency.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QR / UPI Panel -->
+      <div class="donate-panel reveal delay-2">
+        <h4>Pay via UPI / QR Code</h4>
+        <p>Scan the QR code or use the UPI ID below</p>
+
+        <div class="qr-box">
+          <div class="qr-placeholder">
+            <span class="qr-icon">📱</span>
+            <span>QR Code</span>
+            <span style="font-size:0.6rem;color:#ccc;">Add your UPI QR here</span>
+          </div>
+        </div>
+
+        <div class="upi-id">
+          <span>📲 hariyalisetu@upi</span>
+          <button class="copy-btn" onclick="copyUPI()">Copy</button>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;justify-content:center;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/200px-UPI-Logo-vector.svg.png"
+               alt="UPI" style="height:30px;filter:brightness(0.8)invert(1);opacity:0.7;" />
+        </div>
+
+        <div style="border-top:1px solid rgba(255,255,255,0.12);padding-top:20px;margin-top:4px;">
+          <div style="font-size:0.78rem;color:rgba(255,255,255,0.45);margin-bottom:10px;letter-spacing:0.06em;text-transform:uppercase;">Also accept via</div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:8px;padding:8px 16px;font-size:0.82rem;color:rgba(255,255,255,0.75);font-weight:500;">PhonePe</span>
+            <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:8px;padding:8px 16px;font-size:0.82rem;color:rgba(255,255,255,0.75);font-weight:500;">Google Pay</span>
+            <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:8px;padding:8px 16px;font-size:0.82rem;color:rgba(255,255,255,0.75);font-weight:500;">Paytm</span>
+          </div>
+        </div>
+
+        <div class="trust-badge">
+          ✅ &nbsp;Every contribution creates real impact
+        </div>
+
+        <p style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-top:14px;margin-bottom:0;">
+          For large donations or CSR partnerships, write to<br>
+          <strong style="color:rgba(255,255,255,0.6);">hariyalisetu@gmail.com</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOUNDERS SECTION
+============================================================ -->
+<section id="founders">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-label" style="justify-content:center;">The People Behind the Trees</div>
+      <h2 class="section-title" style="text-align:center;">Meet Our Founders</h2>
+      <p class="section-body" style="margin:0 auto;text-align:center;">
+        Driven by passion, guided by purpose — two young changemakers who turned concern into action.
+      </p>
+    </div>
+
+    <div class="founders-grid">
+
+      <!-- Founder 1 -->
+      <div class="founder-card reveal delay-1">
+        <div class="founder-photo">🧑</div>
+        <div class="founder-info">
+          <div class="founder-name">Prashant Yadav</div>
+          <span class="founder-role">Co-Founder & Director</span>
+          <p class="founder-bio">
+            A passionate environmentalist and youth leader from Kanpur, Prashant initiated Hariyali Setu to channel the energy of young people into meaningful climate action. He leads the ground operations and community partnerships.
+          </p>
+        </div>
+      </div>
+
+      <!-- Founder 2 -->
+      <div class="founder-card reveal delay-2">
+        <div class="founder-photo" style="background:linear-gradient(135deg, #2D6A4F 0%, #84A98C 100%);">👨</div>
+        <div class="founder-info">
+          <div class="founder-name">Ashutosh Mishra</div>
+          <span class="founder-role">Co-Founder & Campaign Head</span>
+          <p class="founder-bio">
+            Ashutosh is the creative force behind Hariyali Setu's awareness campaigns and outreach. With a background in community organizing, he builds the bridges between institutions, volunteers, and the environment.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     CONTACT SECTION
+============================================================ -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Get in Touch</div>
+      <h2 class="section-title">Let's Build Something<br><em>Green Together</em></h2>
+    </div>
+
+    <div class="contact-grid">
+
+      <!-- Info -->
+      <div class="contact-info reveal-left">
+        <p class="section-body">
+          Whether you're an individual, institution, or organization — we'd love to hear from you. Reach out to volunteer, collaborate, or donate.
+        </p>
+
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-icon">📧</div>
+            <div>
+              <div class="contact-item-label">Email Us</div>
+              <div class="contact-item-val">
+                <a href="mailto:hariyalisetu@gmail.com" style="color:var(--forest);font-weight:600;">hariyalisetu@gmail.com</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div>
+              <div class="contact-item-label">Call Us</div>
+              <div class="contact-item-val">
+                <a href="tel:+91XXXXXXXXXX" style="color:var(--text);">+91-XXXXXXXXXX</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div>
+              <div class="contact-item-label">Location</div>
+              <div class="contact-item-val">Kanpur, Uttar Pradesh, India — 208001</div>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">🕒</div>
+            <div>
+              <div class="contact-item-label">Response Time</div>
+              <div class="contact-item-val">We respond within 24–48 hours</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social -->
+        <div style="margin-top:36px;">
+          <div style="font-size:0.75rem;font-weight:600;color:var(--sage);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;">Follow Our Journey</div>
+          <div style="display:flex;gap:10px;">
+            <a href="#" class="social-link" title="Instagram">📸</a>
+            <a href="#" class="social-link" title="Facebook">👥</a>
+            <a href="#" class="social-link" title="Twitter/X">🐦</a>
+            <a href="#" class="social-link" title="YouTube">▶️</a>
+            <a href="#" class="social-link" title="LinkedIn">💼</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="contact-form-wrap reveal-right">
+        <h3>Send Us a Message</h3>
+        <p>Questions, partnerships, media inquiries — we're all ears.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="Full Name" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="you@example.com" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Subject</label>
+          <select>
+            <option value="">Select a topic…</option>
+            <option>Volunteer Inquiry</option>
+            <option>Campus Partnership</option>
+            <option>Donation / Sponsorship</option>
+            <option>Media / Press</option>
+            <option>General Question</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Write your message here…" style="min-height:130px;"></textarea>
+        </div>
+
+        <button class="form-submit" onclick="handleContactForm(event)">📨 Send Message</button>
+        <div class="form-note">🌿 Every message matters. We'll respond personally.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-top">
+
+      <!-- Brand -->
+      <div class="footer-brand">
+        <div class="logo-name">🌱 Hariyali Setu</div>
+        <p>A youth climate initiative bringing shade, water, and hope back to the streets of Kanpur. One tree, one matka, one community at a time.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" title="Instagram">📸</a>
+          <a href="#" class="social-link" title="Facebook">👥</a>
+          <a href="#" class="social-link" title="Twitter">🐦</a>
+          <a href="#" class="social-link" title="YouTube">▶️</a>
+          <a href="#" class="social-link" title="LinkedIn">💼</a>
+        </div>
+      </div>
+
+      <!-- Links -->
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#what-we-do">Programs</a></li>
+          <li><a href="#impact">Our Impact</a></li>
+          <li><a href="#founders">Our Team</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="#get-involved">Volunteer</a></li>
+          <li><a href="#get-involved">Plantation Drives</a></li>
+          <li><a href="#get-involved">Campus Partnership</a></li>
+          <li><a href="#donate">Donate</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hariyalisetu@gmail.com">hariyalisetu@gmail.com</a></li>
+          <li><a href="tel:+91XXXXXXXXXX">+91-XXXXXXXXXX</a></li>
+          <li><a href="#contact">Kanpur, UP — 208001</a></li>
+          <li><a href="#contact">Send a Message</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024 Hariyali Setu – A Youth Climate Initiative. All rights reserved.</p>
+      <div class="eco-msg">
+        🌿 &nbsp;Committed to a greener tomorrow, today.
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- Back to Top Button -->
+<button id="back-top" onclick="scrollToTop()" aria-label="Back to top">↑</button>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast">✅ Submitted successfully! We'll be in touch soon.</div>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  /* =========================================================
+     NAVBAR: scroll effect + mobile toggle
+  ========================================================= */
+  const navbar = document.getElementById('navbar');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+
+    // Back-to-top
+    const btn = document.getElementById('back-top');
+    btn.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  function toggleMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('open');
+    navbar.classList.toggle('scrolled', menu.classList.contains('open') || window.scrollY > 60);
+  }
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* =========================================================
+     SCROLL REVEAL — IntersectionObserver
+  ========================================================= */
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  /* =========================================================
+     ANIMATED COUNTERS
+  ========================================================= */
+  function animateCounter(el, target, duration = 2000) {
+    let start = null;
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      // Ease out expo
+      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      el.textContent = Math.floor(eased * target).toLocaleString();
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString();
+    };
+    requestAnimationFrame(step);
+  }
+
+  // Trigger counters when stats section comes into view
+  const statsSection = document.getElementById('impact');
+  let countersDone = false;
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !countersDone) {
+        countersDone = true;
+        document.querySelectorAll('.count').forEach(el => {
+          animateCounter(el, parseInt(el.dataset.target));
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  if (statsSection) counterObserver.observe(statsSection);
+
+  // Hero counters
+  const heroSection = document.getElementById('hero');
+  let heroCountersDone = false;
+
+  setTimeout(() => {
+    if (!heroCountersDone) {
+      heroCountersDone = true;
+      document.querySelectorAll('.hero-stat .num').forEach(el => {
+        animateCounter(el, parseInt(el.dataset.target));
+      });
+    }
+  }, 1200);
+
+  /* =========================================================
+     FLOATING LEAVES GENERATOR
+  ========================================================= */
+  const leafSVG = `<svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 4 C32 4 36 14 36 24 C36 34 26 38 20 38 C20 38 4 28 4 18 C4 8 8 4 20 4Z" fill="#52B788"/>
+    <path d="M20 4 L20 38" stroke="#2D6A4F" stroke-width="1.5" opacity="0.5"/>
+    <path d="M20 4 Q28 14 36 24" stroke="#2D6A4F" stroke-width="1" opacity="0.3"/>
+  </svg>`;
+
+  const container = document.getElementById('leafContainer');
+  if (container) {
+    for (let i = 0; i < 12; i++) {
+      const leaf = document.createElement('div');
+      leaf.classList.add('leaf');
+      leaf.innerHTML = leafSVG;
+      leaf.style.left = Math.random() * 100 + 'vw';
+      leaf.style.animationDuration = (10 + Math.random() * 14) + 's';
+      leaf.style.animationDelay   = (Math.random() * 12) + 's';
+      leaf.style.width  = (28 + Math.random() * 28) + 'px';
+      leaf.style.height = leaf.style.width;
+      container.appendChild(leaf);
+    }
+  }
+
+  /* =========================================================
+     TOAST HELPER
+  ========================================================= */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 4000);
+  }
+
+  /* =========================================================
+     FORM HANDLERS
+  ========================================================= */
+  function handleVolForm(e) {
+    e.preventDefault();
+    showToast('✅ Thank you! We\'ll reach out within 48 hours.');
+  }
+
+  function handleContactForm(e) {
+    e.preventDefault();
+    showToast('📨 Message received! We\'ll respond shortly.');
+  }
+
+  /* =========================================================
+     UPI COPY
+  ========================================================= */
+  function copyUPI() {
+    const id = 'hariyalisetu@upi';
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(id).then(() => showToast('📋 UPI ID copied to clipboard!'));
+    } else {
+      showToast('UPI ID: ' + id);
+    }
+  }
+
+  /* =========================================================
+     SMOOTH ACTIVE NAV HIGHLIGHT
+  ========================================================= */
+  const sections = document.querySelectorAll('section[id]');
+  const navAs    = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) cur = s.id;
+    });
+    navAs.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + cur
+        ? 'var(--gold)'
+        : '';
+    });
+  }, { passive: true });
+</script>
+
+</body>
+</html>
