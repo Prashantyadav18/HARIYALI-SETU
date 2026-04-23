@@ -948,14 +948,14 @@
         <h3>Volunteer Registration</h3>
         <p>Fill in your details and we'll get in touch within 48 hours.</p>
         <div class="fr2">
-          <div class="fg"><label>First Name</label><input type="text" placeholder="Priya"/></div>
-          <div class="fg"><label>Last Name</label><input type="text" placeholder="Sharma"/></div>
+          <div class="fg"><label>First Name</label><input id="volFirstName" type="text" placeholder="Priya"/></div>
+          <div class="fg"><label>Last Name</label><input id="volLastName" type="text" placeholder="Sharma"/></div>
         </div>
-        <div class="fg"><label>Email Address</label><input type="email" placeholder="you@example.com"/></div>
-        <div class="fg"><label>Phone Number</label><input type="tel" placeholder="+91 98765 43210"/></div>
+        <div class="fg"><label>Email Address</label><input id="volEmail" type="email" placeholder="you@example.com"/></div>
+        <div class="fg"><label>Phone Number</label><input id="volPhone" type="tel" placeholder="+91 98765 43210"/></div>
         <div class="fg">
           <label>I want to help with</label>
-          <select>
+          <select id="volArea">
             <option value="">Select an area…</option>
             <option>Tree Plantation Drives</option>
             <option>Water Station Setup</option>
@@ -965,8 +965,8 @@
             <option>Fundraising</option>
           </select>
         </div>
-        <div class="fg"><label>Tell Us About Yourself (Optional)</label><textarea placeholder="Brief intro, background, how you heard about us…"></textarea></div>
-        <button class="fsub" onclick="doForm(event,'✅ Thank you! We\'ll reach out within 48 hours.')">🌿 Register as Volunteer</button>
+        <div class="fg"><label>Tell Us About Yourself (Optional)</label><textarea id="volAbout" placeholder="Brief intro, background, how you heard about us…"></textarea></div>
+        <button class="fsub" onclick="submitVolunteer(event)">🌿 Register as Volunteer</button>
         <div class="fn">✅ Your details are safe with us. We'll never spam you.</div>
       </div>
     </div>
@@ -1206,12 +1206,12 @@
         <h3>Send Us a Message</h3>
         <p>Questions, partnerships, media inquiries — we're all ears.</p>
         <div class="fr2">
-          <div class="fg"><label>Your Name</label><input type="text" placeholder="Full Name"/></div>
-          <div class="fg"><label>Email</label><input type="email" placeholder="you@example.com"/></div>
+          <div class="fg"><label>Your Name</label><input id="ctName" type="text" placeholder="Full Name"/></div>
+          <div class="fg"><label>Email</label><input id="ctEmail" type="email" placeholder="you@example.com"/></div>
         </div>
         <div class="fg">
           <label>Subject</label>
-          <select>
+          <select id="ctSubject">
             <option value="">Select a topic…</option>
             <option>Volunteer Inquiry</option>
             <option>Campus Partnership</option>
@@ -1220,8 +1220,8 @@
             <option>General Question</option>
           </select>
         </div>
-        <div class="fg"><label>Message</label><textarea placeholder="Write your message here…" style="min-height:120px"></textarea></div>
-        <button class="fsub" onclick="doForm(event,'📨 Message received! We\'ll respond shortly.')">📨 Send Message</button>
+        <div class="fg"><label>Message</label><textarea id="ctMessage" placeholder="Write your message here…" style="min-height:120px"></textarea></div>
+        <button class="fsub" onclick="submitContact(event)">📨 Send Message</button>
         <div class="fn">🌿 Every message matters. We'll respond personally.</div>
       </div>
 
@@ -1362,6 +1362,18 @@
     lc.appendChild(l);
   }
 
+  /* ── Google Sheets Integration ─────────────── */
+  // ⚠️ YAHAN APNA APPS SCRIPT URL PASTE KARO (deploy karne ke baad milega)
+  const SHEETS_URL = 'Ahttps://script.google.com/macros/s/AKfycbzZyFAbzxZQKfm-3E1WqHslqD_OgS9Zz4G5p_vQB0GN-QqFZm6lQBJfcPRx92QgJapm/exec';
+
+  function sendToSheets(payload) {
+    if (SHEETS_URL === 'https://script.google.com/macros/s/AKfycbzZyFAbzxZQKfm-3E1WqHslqD_OgS9Zz4G5p_vQB0GN-QqFZm6lQBJfcPRx92QgJapm/exec') return; // URL set nahi hai
+    fetch(SHEETS_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    }).catch(() => {}); // silent fail — user experience disturb na ho
+  }
+
   /* ── Toast ─────────────────────────────────── */
   function toast(msg) {
     const t = document.getElementById('toast');
@@ -1369,6 +1381,42 @@
     setTimeout(() => t.classList.remove('on'), 4000);
   }
   function doForm(e, msg) { e.preventDefault(); toast(msg); }
+
+  /* ── Volunteer Form Submit ──────────────────── */
+  function submitVolunteer(e) {
+    e.preventDefault();
+    const firstName = document.getElementById('volFirstName').value.trim();
+    const lastName  = document.getElementById('volLastName').value.trim();
+    const email     = document.getElementById('volEmail').value.trim();
+    const phone     = document.getElementById('volPhone').value.trim();
+    const area      = document.getElementById('volArea').value;
+    const about     = document.getElementById('volAbout').value.trim();
+    if (!firstName) { toast('⚠️ Pehle apna naam daalo!'); return; }
+    if (!email)     { toast('⚠️ Email address zaroori hai!'); return; }
+    if (!phone)     { toast('⚠️ Phone number daalo!'); return; }
+    if (!area)      { toast('⚠️ Kisi ek area ko select karo!'); return; }
+    sendToSheets({ type: 'volunteer', firstName, lastName, email, phone, area, about });
+    // Form clear
+    ['volFirstName','volLastName','volEmail','volPhone','volAbout'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('volArea').value = '';
+    toast('✅ Thank you! Hum 48 ghante mein contact karenge.');
+  }
+
+  /* ── Contact Form Submit ────────────────────── */
+  function submitContact(e) {
+    e.preventDefault();
+    const name    = document.getElementById('ctName').value.trim();
+    const email   = document.getElementById('ctEmail').value.trim();
+    const subject = document.getElementById('ctSubject').value;
+    const message = document.getElementById('ctMessage').value.trim();
+    if (!name)    { toast('⚠️ Apna naam daalo!'); return; }
+    if (!email)   { toast('⚠️ Email address daalo!'); return; }
+    if (!message) { toast('⚠️ Message likhna toh padega!'); return; }
+    sendToSheets({ type: 'contact', name, email, subject, message });
+    ['ctName','ctEmail','ctMessage'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('ctSubject').value = '';
+    toast('📨 Message mil gaya! Hum jald respond karenge.');
+  }
   function cpUPI() {
     const id = '8318288563@upi';
     if (navigator.clipboard) navigator.clipboard.writeText(id).then(() => toast('📋 UPI ID copied!'));
@@ -1427,6 +1475,8 @@
     const warriors = getWarriors();
     warriors.unshift(entry);
     saveWarriors(warriors);
+    // Google Sheets pe bhi bhejo (photo nahi, sirf metadata)
+    sendToSheets({ type: 'warrior', name, city, msg, date: entry.date });
     document.getElementById('gwName').value = '';
     document.getElementById('gwCity').value = '';
     document.getElementById('gwMsg').value = '';
