@@ -1287,6 +1287,261 @@
 
 
 <script>
+  /* ── Config ────────────────────────────────── */
+  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzZyFAbzxZQKfm-3E1WqHslqD_OgS9Zz4G5p_vQB0GN-QqFZm6lQBJfcPRx92QgJapm/exec';
+
+  // ⚠️ ImgBB FREE API KEY — https://imgbb.com pe signup karo → API → free key milega
+  // Signup: https://imgbb.com/login → Account → API → Get API Key
+  const IMGBB_KEY = '4cd4d7f7668dc3c3fe77318302c2a5e9';
+
+  /* ── Google Sheets bhejo ───────────────────── */
+  function sendToSheets(payload) {
+    fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+  }
+
+  /* ── ImgBB pe photo upload karo ───────────── */
+  async function uploadPhoto(base64) {
+    try {
+      const formData = new FormData();
+      formData.append('image', base64.split(',')[1]);
+      const res  = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+        method: 'POST',
+        body: formData
+      });
+      const json = await res.json();
+      return json.data.url;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  /* ── Volunteer Form ────────────────────────── */
+  function submitVolunteer(e) {
+    e.preventDefault();
+    const firstName = document.getElementById('volFirstName').value.trim();
+    const lastName  = document.getElementById('volLastName').value.trim();
+    const email     = document.getElementById('volEmail').value.trim();
+    const phone     = document.getElementById('volPhone').value.trim();
+    const area      = document.getElementById('volArea').value;
+    const about     = document.getElementById('volAbout').value.trim();
+    if (!firstName) { toast('⚠️ Pehle apna naam daalo!'); return; }
+    if (!email)     { toast('⚠️ Email address zaroori hai!'); return; }
+    if (!phone)     { toast('⚠️ Phone number daalo!'); return; }
+    if (!area)      { toast('⚠️ Kisi ek area ko select karo!'); return; }
+    sendToSheets({ type: 'volunteer', firstName, lastName, email, phone, area, about });
+    ['volFirstName','volLastName','volEmail','volPhone','volAbout'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('volArea').value = '';
+    toast('✅ Thank you! Hum 48 ghante mein contact karenge.');
+  }
+
+  /* ── Contact Form ──────────────────────────── */
+  function submitContact(e) {
+    e.preventDefault();
+    const name    = document.getElementById('ctName').value.trim();
+    const email   = document.getElementById('ctEmail').value.trim();
+    const subject = document.getElementById('ctSubject').value;
+    const message = document.getElementById('ctMessage').value.trim();
+    if (!name)    { toast('⚠️ Apna naam daalo!'); return; }
+    if (!email)   { toast('⚠️ Email address daalo!'); return; }
+    if (!message) { toast('⚠️ Message likhna toh padega!'); return; }
+    sendToSheets({ type: 'contact', name, email, subject, message });
+    ['ctName','ctEmail','ctMessage'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('ctSubject').value = '';
+    toast('📨 Message mil gaya! Hum jald respond karenge.');
+  }
+
+  function doForm(e, msg) { e.preventDefault(); toast(msg); }
+  function cpUPI() {
+    const id = '8318288563@upi';
+    if (navigator.clipboard) navigator.clipboard.writeText(id).then(() => toast('📋 UPI ID copied!'));
+    else toast('UPI ID: ' + id);
+  }
+
+  /* ── Green Warriors Wall ──────────────────── */
+  const ADMIN_PASS = 'HariyaliAdmin2026';
+  let currentPhotoB64 = null;
+
+  function handlePhoto(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { toast('⚠️ Photo too large! Max 5MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = e => {
+      currentPhotoB64 = e.target.result;
+      const prev = document.getElementById('photoPreview');
+      prev.src = currentPhotoB64;
+      prev.style.display = 'block';
+      document.querySelector('.photo-drop .pd-icon').textContent = '✅';
+      document.querySelector('.photo-drop .pd-txt').textContent = 'Photo selected!';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  const dropZone = document.getElementById('photoDrop');
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.classList.remove('drag');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      document.getElementById('photoInput').files = e.dataTransfer.files;
+      handlePhoto(document.getElementById('photoInput'));
+    }
+  });
+
+  /* ── Warrior Submit ────────────────────────── */
+  async function submitWarrior() {
+    const name = document.getElementById('gwName').value.trim();
+    const city = document.getElementById('gwCity').value.trim();
+    const msg  = document.getElementById('gwMsg').value.trim();
+    if (!name)           { toast('⚠️ Please enter your name!'); return; }
+    if (!city)           { toast('⚠️ Please enter your city!'); return; }
+    if (!currentPhotoB64){ toast('⚠️ Please upload a photo first!'); return; }
+
+    // Button disable karo taaki double submit na ho
+    const btn = document.querySelector('#warriors .fsub');
+    btn.disabled = true;
+    btn.textContent = '⏳ Uploading photo...';
+
+    let photo_url = '';
+
+    if (IMGBB_KEY === 'APNA_IMGBB_KEY_YAHAN_PASTE_KARO') {
+      // ImgBB key nahi hai — locally hi dikhao (old behavior)
+      photo_url = currentPhotoB64;
+    } else {
+      toast('📤 Photo upload ho rahi hai...');
+      photo_url = await uploadPhoto(currentPhotoB64);
+      if (!photo_url) {
+        toast('⚠️ Photo upload fail. Dobara try karo.');
+        btn.disabled = false;
+        btn.textContent = '🌱 Share on Green Wall';
+        return;
+      }
+    }
+
+    const dateLabel = new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+
+    // Sheets mein bhejo
+    sendToSheets({ type: 'warrior', name, city, msg, date: dateLabel, photo_url });
+
+    // Wall mein turant dikhao (optimistic update)
+    const grid = document.getElementById('wallGrid');
+    const card = document.createElement('div');
+    card.className = 'wall-card';
+    card.innerHTML = `
+      <img src="${photo_url}" alt="${name}" loading="lazy"/>
+      <div class="wc-info">
+        <div class="wc-name">🌿 ${name}</div>
+        <div class="wc-loc">📍 ${city}</div>
+        ${msg ? `<div class="wc-msg">"${msg}"</div>` : ''}
+        <div class="wc-date">${dateLabel}</div>
+      </div>`;
+    // "Be the first" placeholder hata do
+    const empty = grid.querySelector('.wall-empty');
+    if (empty) empty.remove();
+    grid.prepend(card);
+
+    // Form reset
+    document.getElementById('gwName').value = '';
+    document.getElementById('gwCity').value = '';
+    document.getElementById('gwMsg').value = '';
+    currentPhotoB64 = null;
+    document.getElementById('photoPreview').style.display = 'none';
+    document.querySelector('.photo-drop .pd-icon').textContent = '🌿';
+    document.querySelector('.photo-drop .pd-txt').textContent = 'Click or drag your photo here';
+    document.getElementById('photoInput').value = '';
+    btn.disabled = false;
+    btn.textContent = '🌱 Share on Green Wall';
+    toast('🌱 Your photo is now on the Green Warriors Wall!');
+  }
+
+  /* ── Wall Load: Sheets se fetch karo ──────── */
+  async function loadWallFromSheets() {
+    try {
+      const res      = await fetch(SHEETS_URL + '?type=warriors');
+      const warriors = await res.json();
+      if (!warriors.length) return; // empty toh default placeholder rahega
+      const grid = document.getElementById('wallGrid');
+      grid.innerHTML = warriors.slice(0, 6).map(w => `
+        <div class="wall-card">
+          <img src="${w.photo}" alt="${w.name}" loading="lazy" onerror="this.style.display='none'"/>
+          <div class="wc-info">
+            <div class="wc-name">🌿 ${w.name}</div>
+            <div class="wc-loc">📍 ${w.city}</div>
+            ${w.msg ? `<div class="wc-msg">"${w.msg}"</div>` : ''}
+            <div class="wc-date">${w.dateLabel}</div>
+          </div>
+        </div>`).join('');
+    } catch (err) {
+      // Fetch fail ho toh koi dikkat nahi — placeholder rahega
+    }
+  }
+  loadWallFromSheets();
+
+  /* ── Admin Panel ───────────────────────────── */
+  function openAdmin() {
+    document.getElementById('adminPanel').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('apPass').focus(), 200);
+  }
+  function closeAdmin() {
+    document.getElementById('adminPanel').classList.remove('open');
+    document.body.style.overflow = '';
+    document.getElementById('apLogin').style.display = 'block';
+    document.getElementById('apDash').style.display = 'none';
+    document.getElementById('apPass').value = '';
+    document.getElementById('apErr').style.display = 'none';
+    history.pushState(null, '', window.location.pathname);
+  }
+  function checkAdmin() {
+    if (document.getElementById('apPass').value === ADMIN_PASS) {
+      document.getElementById('apLogin').style.display = 'none';
+      document.getElementById('apDash').style.display = 'block';
+      renderAdminDash();
+    } else {
+      document.getElementById('apErr').style.display = 'block';
+      document.getElementById('apPass').value = '';
+      document.getElementById('apPass').focus();
+    }
+  }
+  async function renderAdminDash() {
+    document.getElementById('apSubmissions').innerHTML = '<div class="ap-empty">⏳ Loading...</div>';
+    try {
+      const res      = await fetch(SHEETS_URL + '?type=warriors');
+      const warriors = await res.json();
+      const today    = new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+      const cities   = [...new Set(warriors.map(w => w.city.split(',')[0].trim()))].length;
+      const todayCount = warriors.filter(w => w.dateLabel === today).length;
+      document.getElementById('statTotal').textContent = warriors.length;
+      document.getElementById('statCities').textContent = cities;
+      document.getElementById('statToday').textContent = todayCount;
+      document.getElementById('apSubtitle').textContent = `${warriors.length} warrior${warriors.length !== 1 ? 's' : ''} across ${cities} cities`;
+      const cont = document.getElementById('apSubmissions');
+      if (!warriors.length) { cont.innerHTML = '<div class="ap-empty">🌱 No submissions yet.</div>'; return; }
+      cont.innerHTML = warriors.map(w => `
+        <div class="ap-card">
+          <img src="${w.photo}" alt="${w.name}" onerror="this.style.display='none'"/>
+          <div>
+            <div class="ac-name">🌿 ${w.name}</div>
+            <div class="ac-loc">📍 ${w.city}</div>
+            ${w.msg ? `<div class="ac-msg">"${w.msg}"</div>` : ''}
+            <div class="ac-meta">
+              <span class="ac-tag">📅 ${w.dateLabel}</span>
+            </div>
+          </div>
+        </div>`).join('');
+    } catch (err) {
+      document.getElementById('apSubmissions').innerHTML = '<div class="ap-empty">❌ Load nahi hua. Refresh karo.</div>';
+    }
+  }
+  if (window.location.hash === '#admin') openAdmin();
+  window.addEventListener('hashchange', () => { if (window.location.hash === '#admin') openAdmin(); });
+
   /* ── Navbar scroll ─────────────────────────── */
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
@@ -1305,7 +1560,6 @@
   const ham = document.getElementById('ham');
   const dr  = document.getElementById('dr');
   const ov  = document.getElementById('ov');
-
   function openD() {
     ham.classList.add('open'); dr.classList.add('open'); ov.classList.add('open');
     ham.setAttribute('aria-expanded','true');
@@ -1361,220 +1615,6 @@
     l.style.width = sz; l.style.height = sz;
     lc.appendChild(l);
   }
-
-  /* ── Toast ─────────────────────────────────── */
-  function toast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('on');
-    setTimeout(() => t.classList.remove('on'), 4000);
-  }
-  /* ── Google Sheets Integration ─────────────── */
-  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzZyFAbzxZQKfm-3E1WqHslqD_OgS9Zz4G5p_vQB0GN-QqFZm6lQBJfcPRx92QgJapm/exec';
-
-  function sendToSheets(payload) {
-    fetch(SHEETS_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    }).catch(() => {});
-  }
-
-  /* ── Volunteer Form Submit ──────────────────── */
-  function submitVolunteer(e) {
-    e.preventDefault();
-    const firstName = document.getElementById('volFirstName').value.trim();
-    const lastName  = document.getElementById('volLastName').value.trim();
-    const email     = document.getElementById('volEmail').value.trim();
-    const phone     = document.getElementById('volPhone').value.trim();
-    const area      = document.getElementById('volArea').value;
-    const about     = document.getElementById('volAbout').value.trim();
-    if (!firstName) { toast('⚠️ Pehle apna naam daalo!'); return; }
-    if (!email)     { toast('⚠️ Email address zaroori hai!'); return; }
-    if (!phone)     { toast('⚠️ Phone number daalo!'); return; }
-    if (!area)      { toast('⚠️ Kisi ek area ko select karo!'); return; }
-    sendToSheets({ type: 'volunteer', firstName, lastName, email, phone, area, about });
-    ['volFirstName','volLastName','volEmail','volPhone','volAbout'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('volArea').value = '';
-    toast('✅ Thank you! Hum 48 ghante mein contact karenge.');
-  }
-
-  /* ── Contact Form Submit ────────────────────── */
-  function submitContact(e) {
-    e.preventDefault();
-    const name    = document.getElementById('ctName').value.trim();
-    const email   = document.getElementById('ctEmail').value.trim();
-    const subject = document.getElementById('ctSubject').value;
-    const message = document.getElementById('ctMessage').value.trim();
-    if (!name)    { toast('⚠️ Apna naam daalo!'); return; }
-    if (!email)   { toast('⚠️ Email address daalo!'); return; }
-    if (!message) { toast('⚠️ Message likhna toh padega!'); return; }
-    sendToSheets({ type: 'contact', name, email, subject, message });
-    ['ctName','ctEmail','ctMessage'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('ctSubject').value = '';
-    toast('📨 Message mil gaya! Hum jald respond karenge.');
-  }
-
-  function doForm(e, msg) { e.preventDefault(); toast(msg); }
-  function cpUPI() {
-    const id = '8318288563@upi';
-    if (navigator.clipboard) navigator.clipboard.writeText(id).then(() => toast('📋 UPI ID copied!'));
-    else toast('UPI ID: ' + id);
-  }
-
-  /* ── Green Warriors Wall ──────────────────── */
-  const ADMIN_PASS = 'HariyaliAdmin2026';
-  let currentPhotoB64 = null;
-
-  function handlePhoto(input) {
-    const file = input.files[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) { toast('⚠️ Photo too large! Max 5MB.'); return; }
-    const reader = new FileReader();
-    reader.onload = e => {
-      currentPhotoB64 = e.target.result;
-      const prev = document.getElementById('photoPreview');
-      prev.src = currentPhotoB64;
-      prev.style.display = 'block';
-      document.querySelector('.photo-drop .pd-icon').textContent = '✅';
-      document.querySelector('.photo-drop .pd-txt').textContent = 'Photo selected!';
-    };
-    reader.readAsDataURL(file);
-  }
-
-  const dropZone = document.getElementById('photoDrop');
-  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag'); });
-  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
-  dropZone.addEventListener('drop', e => {
-    e.preventDefault(); dropZone.classList.remove('drag');
-    const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      document.getElementById('photoInput').files = e.dataTransfer.files;
-      handlePhoto(document.getElementById('photoInput'));
-    }
-  });
-
-  function getWarriors() {
-    try { return JSON.parse(localStorage.getItem('gw_warriors') || '[]'); } catch { return []; }
-  }
-  function saveWarriors(arr) { localStorage.setItem('gw_warriors', JSON.stringify(arr)); }
-
-  function submitWarrior() {
-    const name = document.getElementById('gwName').value.trim();
-    const city = document.getElementById('gwCity').value.trim();
-    const msg  = document.getElementById('gwMsg').value.trim();
-    if (!name) { toast('⚠️ Please enter your name!'); return; }
-    if (!city) { toast('⚠️ Please enter your city!'); return; }
-    if (!currentPhotoB64) { toast('⚠️ Please upload a photo first!'); return; }
-    const entry = {
-      id: Date.now(), name, city, msg, photo: currentPhotoB64,
-      date: new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }),
-      ts: Date.now()
-    };
-    const warriors = getWarriors();
-    warriors.unshift(entry);
-    saveWarriors(warriors);
-    sendToSheets({ type: 'warrior', name, city, msg, date: entry.date });
-    document.getElementById('gwName').value = '';
-    document.getElementById('gwCity').value = '';
-    document.getElementById('gwMsg').value = '';
-    currentPhotoB64 = null;
-    document.getElementById('photoPreview').style.display = 'none';
-    document.querySelector('.photo-drop .pd-icon').textContent = '🌿';
-    document.querySelector('.photo-drop .pd-txt').textContent = 'Click or drag your photo here';
-    document.getElementById('photoInput').value = '';
-    renderWall();
-    toast('🌱 Your photo is now on the Green Warriors Wall!');
-  }
-
-  function renderWall() {
-    const warriors = getWarriors();
-    const grid = document.getElementById('wallGrid');
-    if (!warriors.length) {
-      grid.innerHTML = `<div class="wall-empty" style="grid-column:span 2"><div class="we-icon">🌱</div><p>Be the first Green Warrior!<br>Upload your tree-planting photo above.</p></div>`;
-      return;
-    }
-    grid.innerHTML = warriors.slice(0, 6).map(w => `
-      <div class="wall-card">
-        <img src="${w.photo}" alt="${w.name}" loading="lazy"/>
-        <div class="wc-info">
-          <div class="wc-name">🌿 ${w.name}</div>
-          <div class="wc-loc">📍 ${w.city}</div>
-          ${w.msg ? `<div class="wc-msg">"${w.msg}"</div>` : ''}
-          <div class="wc-date">${w.date}</div>
-        </div>
-      </div>`).join('');
-  }
-  renderWall();
-
-  /* ── Admin Panel ───────────────────────────── */
-  function openAdmin() {
-    document.getElementById('adminPanel').classList.add('open');
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => document.getElementById('apPass').focus(), 200);
-  }
-  function closeAdmin() {
-    document.getElementById('adminPanel').classList.remove('open');
-    document.body.style.overflow = '';
-    document.getElementById('apLogin').style.display = 'block';
-    document.getElementById('apDash').style.display = 'none';
-    document.getElementById('apPass').value = '';
-    document.getElementById('apErr').style.display = 'none';
-    history.pushState(null, '', window.location.pathname);
-  }
-  function checkAdmin() {
-    if (document.getElementById('apPass').value === ADMIN_PASS) {
-      document.getElementById('apLogin').style.display = 'none';
-      document.getElementById('apDash').style.display = 'block';
-      renderAdminDash();
-    } else {
-      document.getElementById('apErr').style.display = 'block';
-      document.getElementById('apPass').value = '';
-      document.getElementById('apPass').focus();
-    }
-  }
-  function renderAdminDash() {
-    const warriors = getWarriors();
-    const today = new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
-    const cities = [...new Set(warriors.map(w => w.city.split(',')[0].trim()))].length;
-    const todayCount = warriors.filter(w => w.date === today).length;
-    document.getElementById('statTotal').textContent = warriors.length;
-    document.getElementById('statCities').textContent = cities;
-    document.getElementById('statToday').textContent = todayCount;
-    document.getElementById('apSubtitle').textContent = `${warriors.length} warrior${warriors.length !== 1 ? 's' : ''} across ${cities} cities`;
-    const cont = document.getElementById('apSubmissions');
-    if (!warriors.length) { cont.innerHTML = '<div class="ap-empty">🌱 No submissions yet. Share the website!</div>'; return; }
-    cont.innerHTML = warriors.map(w => `
-      <div class="ap-card">
-        <img src="${w.photo}" alt="${w.name}"/>
-        <div>
-          <div class="ac-name">🌿 ${w.name}</div>
-          <div class="ac-loc">📍 ${w.city}</div>
-          ${w.msg ? `<div class="ac-msg">"${w.msg}"</div>` : ''}
-          <div class="ac-meta">
-            <span class="ac-tag">📅 ${w.date}</span>
-            <span class="ac-tag">🆔 #${w.id}</span>
-            <button onclick="deleteWarrior(${w.id})" style="background:#fff0f0;border:1px solid #fcc;color:#e74c3c;border-radius:50px;padding:3px 11px;font-size:.69rem;font-weight:600;cursor:pointer">🗑 Remove</button>
-          </div>
-        </div>
-      </div>`).join('');
-  }
-  function deleteWarrior(id) {
-    saveWarriors(getWarriors().filter(w => w.id !== id));
-    renderWall(); renderAdminDash(); toast('🗑 Submission removed.');
-  }
-  function exportCSV() {
-    const warriors = getWarriors();
-    if (!warriors.length) { toast('No data to export.'); return; }
-    const rows = [['ID','Name','City','Message','Date'],...warriors.map(w => [w.id,w.name,w.city,w.msg||'',w.date])];
-    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
-    const a = document.createElement('a');
-    a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-    a.download = 'green-warriors-' + new Date().toISOString().slice(0,10) + '.csv';
-    a.click(); toast('📥 CSV exported!');
-  }
-  if (window.location.hash === '#admin') openAdmin();
-  window.addEventListener('hashchange', () => { if (window.location.hash === '#admin') openAdmin(); });
 </script>
 
 </body>
