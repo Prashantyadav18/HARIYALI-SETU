@@ -523,6 +523,48 @@
     .ft-bot p{font-size:.76rem;color:rgba(255,255,255,.3)}
     .eco{display:flex;align-items:center;gap:6px;font-size:.74rem;color:rgba(255,255,255,.34)}
 
+    /* ── WhatsApp Share Box ──────────────────── */
+    .wa-share-box {
+      margin-top: 18px;
+      background: linear-gradient(135deg, #e7f9ef 0%, #d4f5e2 100%);
+      border: 1.5px solid #b7ebb0;
+      border-radius: 14px;
+      padding: 16px 18px;
+      text-align: center;
+    }
+    .wa-label {
+      font-size: .83rem;
+      font-weight: 600;
+      color: var(--forest);
+      margin-bottom: 10px;
+    }
+    .btn-wa {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: #25D366;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 11px 26px;
+      font-size: .92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .3s var(--ease);
+      box-shadow: 0 6px 20px rgba(37,211,102,.35);
+    }
+    .btn-wa:hover {
+      background: #1ebe5d;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(37,211,102,.45);
+    }
+    .wa-hint {
+      font-size: .72rem;
+      color: var(--sage);
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+
     /* Back-top + Toast */
     #btt{
       position:fixed;bottom:28px;left:28px;
@@ -659,6 +701,7 @@
     .wall-card .wc-loc{font-size:.72rem;color:var(--muted);margin-top:2px}
     .wall-card .wc-msg{font-size:.78rem;color:var(--text);margin-top:6px;line-height:1.55}
     .wall-card .wc-date{font-size:.68rem;color:var(--muted);margin-top:6px;opacity:.7}
+    .wall-card .wc-wa{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:#25D366;color:#fff;border:none;border-radius:20px;padding:5px 12px;font-size:.7rem;font-weight:600;cursor:pointer;transition:all .25s}
     .wall-empty{text-align:center;padding:40px 20px;color:var(--muted)}
     .wall-empty .we-icon{font-size:3rem;margin-bottom:10px}
     .wall-empty p{font-size:.85rem;line-height:1.6}
@@ -1082,7 +1125,7 @@
           <input type="file" id="photoInput" accept="image/*" onchange="handlePhoto(this)"/>
           <div class="pd-icon">🌿</div>
           <div class="pd-txt">Click or drag your photo here</div>
-          <div class="pd-sub">JPG, PNG, WEBP · Max 5MB</div>
+          <div class="pd-sub">JPG, PNG, WEBP · Max 10MB (auto compressed)</div>
         </div>
 
         <div class="fg">
@@ -1099,6 +1142,16 @@
         </div>
         <button class="fsub" onclick="submitWarrior()">🌱 Share on Green Wall</button>
         <div class="fn">🌍 Your post will be visible to everyone on this page instantly.</div>
+
+        <!-- WhatsApp Share -->
+        <div class="wa-share-box">
+          <p class="wa-label">📲 Seedha WhatsApp pe share karo!</p>
+          <button class="btn-wa" onclick="shareOnWhatsApp()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp pe Share Karo
+          </button>
+          <p class="wa-hint">Photo + website ka link directly WhatsApp pe jayega 🌿</p>
+        </div>
       </div>
 
       <!-- Wall -->
@@ -1292,7 +1345,8 @@
 
   // ⚠️ ImgBB FREE API KEY — https://imgbb.com pe signup karo → API → free key milega
   // Signup: https://imgbb.com/login → Account → API → Get API Key
-  const IMGBB_KEY = '4cd4d7f7668dc3c3fe77318302c2a5e9';
+  // ✅ STEP: imgbb.com pe free account banao, API key copy karo aur neeche paste karo
+  const IMGBB_KEY = 'APNA_IMGBB_KEY_YAHAN_PASTE_KARO';
 
   /* ── Google Sheets bhejo ───────────────────── */
   function sendToSheets(payload) {
@@ -1362,6 +1416,25 @@
     else toast('UPI ID: ' + id);
   }
 
+  /* ── WhatsApp Share ────────────────────────── */
+  function shareOnWhatsApp() {
+    const name = document.getElementById('gwName').value.trim();
+    const city = document.getElementById('gwCity').value.trim();
+    const msg  = document.getElementById('gwMsg').value.trim();
+
+    let text = '🌿 *Hariyali Setu — Green Warriors Wall*\n\n';
+    text += '🌱 Maine ek ped lagaya! ';
+    if (name) text += `\n👤 Naam: ${name}`;
+    if (city) text += `\n📍 Location: ${city}`;
+    if (msg)  text += `\n💬 "${msg}"`;
+    text += '\n\n🌍 Aap bhi hamare Green Warriors Wall pe apni photo share karo aur hamare movement ka hissa bano!\n';
+    text += '👉 ' + window.location.href.split('#')[0] + '#warriors';
+    text += '\n\n#HariyaliSetu #GreenWarrior #PlantATree #Kanpur';
+
+    const waURL = 'https://wa.me/?text=' + encodeURIComponent(text);
+    window.open(waURL, '_blank');
+  }
+
   /* ── Green Warriors Wall ──────────────────── */
   const ADMIN_PASS = 'HariyaliAdmin2026';
   let currentPhotoB64 = null;
@@ -1369,15 +1442,31 @@
   function handlePhoto(input) {
     const file = input.files[0];
     if (!file) return;
-    if (file.size > 5 * 1024 * 1024) { toast('⚠️ Photo too large! Max 5MB.'); return; }
+    // 10MB tak allow — badi photos compress ho jayengi
+    if (file.size > 10 * 1024 * 1024) { toast('⚠️ Photo too large! Max 10MB allowed.'); return; }
+
+    document.querySelector('.photo-drop .pd-icon').textContent = '⏳';
+    document.querySelector('.photo-drop .pd-txt').textContent = 'Processing photo...';
+
     const reader = new FileReader();
     reader.onload = e => {
-      currentPhotoB64 = e.target.result;
-      const prev = document.getElementById('photoPreview');
-      prev.src = currentPhotoB64;
-      prev.style.display = 'block';
-      document.querySelector('.photo-drop .pd-icon').textContent = '✅';
-      document.querySelector('.photo-drop .pd-txt').textContent = 'Photo selected!';
+      const img = new Image();
+      img.onload = () => {
+        // Canvas pe compress karo — max 1200px wide, quality 0.82
+        const canvas  = document.createElement('canvas');
+        const maxW    = 1200;
+        const scale   = img.width > maxW ? maxW / img.width : 1;
+        canvas.width  = Math.round(img.width  * scale);
+        canvas.height = Math.round(img.height * scale);
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        currentPhotoB64 = canvas.toDataURL('image/jpeg', 0.82);
+        const prev = document.getElementById('photoPreview');
+        prev.src = currentPhotoB64;
+        prev.style.display = 'block';
+        document.querySelector('.photo-drop .pd-icon').textContent = '✅';
+        document.querySelector('.photo-drop .pd-txt').textContent = 'Photo ready! (' + (currentPhotoB64.length / 1024 / 1024 * 0.75).toFixed(1) + ' MB)';
+      };
+      img.src = e.target.result;
     };
     reader.readAsDataURL(file);
   }
@@ -1411,8 +1500,10 @@
     let photo_url = '';
 
     if (IMGBB_KEY === 'APNA_IMGBB_KEY_YAHAN_PASTE_KARO') {
-      // ImgBB key nahi hai — locally hi dikhao (old behavior)
+      // ImgBB key nahi hai — base64 directly use karo (Google Sheets mein URL ki jagah base64 jayega)
+      // Note: Ye sirf temporary hai — proper hosting ke liye ImgBB key lagao
       photo_url = currentPhotoB64;
+      toast('⚠️ ImgBB key nahi hai — photo locally save ho rahi hai. imgbb.com se free key lagao!');
     } else {
       toast('📤 Photo upload ho rahi hai...');
       photo_url = await uploadPhoto(currentPhotoB64);
@@ -1440,6 +1531,10 @@
         <div class="wc-loc">📍 ${city}</div>
         ${msg ? `<div class="wc-msg">"${msg}"</div>` : ''}
         <div class="wc-date">${dateLabel}</div>
+        <button class="wc-wa" onclick="shareCardOnWA('${encodeURIComponent(name)}','${encodeURIComponent(city)}','${encodeURIComponent(msg)}')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Share
+        </button>
       </div>`;
     // "Be the first" placeholder hata do
     const empty = grid.querySelector('.wall-empty');
@@ -1475,6 +1570,10 @@
             <div class="wc-loc">📍 ${w.city}</div>
             ${w.msg ? `<div class="wc-msg">"${w.msg}"</div>` : ''}
             <div class="wc-date">${w.dateLabel}</div>
+            <button class="wc-wa" onclick="shareCardOnWA('${encodeURIComponent(w.name)}','${encodeURIComponent(w.city)}','${encodeURIComponent(w.msg||'')}')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Share
+            </button>
           </div>
         </div>`).join('');
     } catch (err) {
@@ -1483,7 +1582,15 @@
   }
   loadWallFromSheets();
 
-  /* ── Admin Panel ───────────────────────────── */
+  function shareCardOnWA(nameEnc, cityEnc, msgEnc) {
+    const name = decodeURIComponent(nameEnc);
+    const city = decodeURIComponent(cityEnc);
+    const msg  = decodeURIComponent(msgEnc);
+    let text = `🌿 *Green Warrior: ${name}*\n📍 ${city}\n`;
+    if (msg) text += `💬 "${msg}"\n`;
+    text += `\n🌱 Hariyali Setu ka hissa bano — apna ped lagao aur share karo!\n👉 ${window.location.href.split('#')[0]}#warriors\n#HariyaliSetu #GreenWarrior`;
+    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  }
   function openAdmin() {
     document.getElementById('adminPanel').classList.add('open');
     document.body.style.overflow = 'hidden';
